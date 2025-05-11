@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Твій шлях в IT: інтерактивна карта</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+        
+        :root {
+            --primary-color: #4f46e5;
+            --primary-light: #eef2ff;
+            --secondary-color: #6366f1;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --bg-light: #f9fafb;
+            --white: #ffffff;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: var(--text-dark);
+            background-color: var(--bg-light);
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        a:hover {
+            color: var(--secondary-color);
+            text-decoration: underline;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: var(--white);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            padding: 30px;
+            overflow: hidden;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        h1 {
+            color: var(--primary-color);
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        
+        h2 {
+            color: var(--primary-color);
+            font-size: 24px;
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        
+        h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        
+        section {
+            background-color: var(--white);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+        }
+        
+        .platform-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        
+        .platform-card {
+            background-color: var(--primary-light);
+            padding: 20px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .platform-card h3 {
+            font-weight: 700;
+        }
+        
+        .platform-card p {
+            margin-bottom: 15px;
+            flex-grow: 1;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        
+        th {
+            background-color: #e0e7ff;
+            color: var(--primary-color);
+            text-align: left;
+            padding: 12px 15px;
+            font-weight: 500;
+        }
+        
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        tr:hover {
+            background-color: #f9fafb;
+        }
+        
+        .language-tag {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .js {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+        
+        .python {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .cpp {
+            background-color: #fee2e2;
+            color: #b91c1c;
+        }
+        
+        .dart {
+            background-color: #ccfbf1;
+            color: #0f766e;
+        }
+        
+        .step {
+            display: flex;
+            margin-bottom: 25px;
+        }
+        
+        .step-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary-color);
+            color: var(--white);
+            font-weight: 700;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        
+        .step-content {
+            margin-left: 15px;
+        }
+        
+        .language-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .language-card {
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+        
+        .web {
+            background: linear-gradient(to bottom right, #eef2ff, #e0e7ff);
+            border-color: #c7d2fe;
+        }
+        
+        .ai {
+            background: linear-gradient(to bottom right, #ecfdf5, #d1fae5);
+            border-color: #a7f3d0;
+        }
+        
+        .algo {
+            background: linear-gradient(to bottom right, #fff7ed, #ffedd5);
+            border-color: #fed7aa;
+        }
+        
+        .resources {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .resource-card {
+            padding: 20px;
+            border-radius: 8px;
+            transition: box-shadow 0.3s ease;
+            height: 100%;
+        }
+        
+        .resource-card:hover {
+            box-shadow: var(--shadow);
+        }
+        
+        .roadmap {
+            background: linear-gradient(to right, #f3e8ff, #e0e7ff);
+            border: 1px solid #d8b4fe;
+        }
+        
+        .stackoverflow {
+            background: linear-gradient(to right, #fff7ed, #fef3c7);
+            border: 1px solid #fed7aa;
+        }
+        
+        .github {
+            background: linear-gradient(to right, #f1f5f9, #e2e8f0);
+            border: 1px solid #cbd5e1;
+        }
+        
+        .resource-card h3 {
+            color: var(--text-dark);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            color: var(--text-light);
+            font-size: 14px;
+        }
+        
+        /* Added for PDF export styling */
+        @media print {
+            body {
+                background-color: white;
+                padding: 0;
+            }
+            
+            .container {
+                box-shadow: none;
+                border: none;
+            }
+            
+            section {
+                box-shadow: none;
+                border: 1px solid #eee;
+                page-break-inside: avoid;
+            }
+            
+            a {
+                color: #1a0dab;
+            }
+            
+            .platform-card, .language-card, .resource-card {
+                border: 1px solid #ddd;
+            }
+            
+            /* Make links display their URL */
+            a::after {
+                content: " (" attr(href) ")";
+                font-size: 12px;
+                font-style: italic;
+                color: #555;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Твій шлях в IT: інтерактивна карта</h1>
+            <p>Структурований план для вибору IT-спеціальності та навчання</p>
+        </header>
+
+        <!-- Section 1: Platforms -->
+        <section>
+            <h2>1. Платформи для вибору спеціальності</h2>
+            <div class="platform-grid">
+                <div class="platform-card">
+                    <h3>Coursera</h3>
+                    <p>Світовий лідер з тестом "Which tech career is right for you?"</p>
+                    <a href="https://www.coursera.org/career-questions/which-tech-career-right-quiz" target="_blank">Перейти на Coursera</a>
+                </div>
+
+                <div class="platform-card">
+                    <h3>Udemy</h3>
+                    <p>Зручні короткі курси з різних IT-напрямків</p>
+                    <a href="https://www.udemy.com/courses/development/" target="_blank">Перейти на Udemy</a>
+                </div>
+
+                <div class="platform-card">
+                    <h3>freeCodeCamp</h3>
+                    <p>Безкоштовна освіта, орієнтована на практику</p>
+                    <a href="https://www.freecodecamp.org/" target="_blank">Перейти на freeCodeCamp</a>
+                </div>
+
+                <div class="platform-card">
+                    <h3>Stepik</h3>
+                    <p>Курси від університетів, зокрема з Python, C++</p>
+                    <a href="https://stepik.org/catalog/24" target="_blank">Перейти на Stepik</a>
+                </div>
+
+                <div class="platform-card">
+                    <h3>CS50 від Гарварду</h3>
+                    <p>Чудовий загальний курс комп'ютерних наук</p>
+                    <a href="https://cs50.harvard.edu/x/" target="_blank">Перейти на CS50</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Roadmap -->
+        <section>
+            <h2>2. Роудмап для новачка в IT</h2>
+            <div style="overflow-x: auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Напрямок</th>
+                            <th>Мова</th>
+                            <th>Курс</th>
+                            <th>Платформа</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Веб-розробка (Frontend)</td>
+                            <td><span class="language-tag js">JavaScript</span></td>
+                            <td>
+                                <a href="https://www.freecodecamp.org/learn/responsive-web-design/" target="_blank">
+                                    Responsive Web Design
+                                </a>
+                            </td>
+                            <td>freeCodeCamp</td>
+                        </tr>
+                        <tr>
+                            <td>Розробка програм (Backend)</td>
+                            <td><span class="language-tag python">Python</span></td>
+                            <td>
+                                <a href="https://www.coursera.org/specializations/python" target="_blank">
+                                    Python for Everybody
+                                </a>
+                            </td>
+                            <td>Coursera</td>
+                        </tr>
+                        <tr>
+                            <td>Системне/Ігрове програмування</td>
+                            <td><span class="language-tag cpp">C++</span></td>
+                            <td>
+                                <a href="https://stepik.org/course/363/promo" target="_blank">
+                                    Програмування на C++
+                                </a>
+                            </td>
+                            <td>Stepik</td>
+                        </tr>
+                        <tr>
+                            <td>Мобільна розробка</td>
+                            <td><span class="language-tag dart">Dart/Flutter</span></td>
+                            <td>
+                                <a href="https://www.udemy.com/course/flutter-bootcamp-with-dart/" target="_blank">
+                                    Flutter Development Bootcamp
+                                </a>
+                            </td>
+                            <td>Udemy</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Section 3: First Steps -->
+        <section>
+            <h2>3. Інструкція: Перші кроки</h2>
+            
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3>Пройди кар'єрний тест</h3>
+                    <p>Наприклад, на <a href="https://www.coursera.org/career-questions/which-tech-career-right-quiz" target="_blank">Coursera Tech Career Quiz</a></p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3>Зареєструйся на кожну платформу</h3>
+                    <ul style="list-style-type: disc; margin-left: 20px;">
+                        <li><a href="https://www.freecodecamp.org/learn/" target="_blank">freeCodeCamp</a> — безкоштовно</li>
+                        <li><a href="https://www.coursera.org/" target="_blank">Coursera</a>/<a href="https://www.udemy.com/" target="_blank">Udemy</a> — зі знижками або безкоштовними періодами</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3>Визнач пріоритети</h3>
+                    <p>Пройди по 2-3 уроки з кожного напрямку, щоб зрозуміти, що подобається найбільше</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h3>Обери основну мову і поглиблюйся</h3>
+                    <div class="language-cards">
+                        <div class="language-card web">
+                            <h4>Веб-розробка</h4>
+                            <p>Якщо хочеш швидше бачити результат — обери HTML/CSS/JS</p>
+                        </div>
+                        <div class="language-card ai">
+                            <h4>Аналітика, ШІ</h4>
+                            <p>Якщо цікавлять дані, ШІ — починай з Python</p>
+                        </div>
+                        <div class="language-card algo">
+                            <h4>Алгоритми</h4>
+                            <p>Якщо любиш точність, алгоритми — C++</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Additional Resources -->
+        <section>
+            <h2>4. Додаткові ресурси</h2>
+            <div class="resources">
+                <a href="https://roadmap.sh/" target="_blank" class="resource-card roadmap">
+                    <h3>Roadmap.sh</h3>
+                    <p>Інтерактивні карти для кожної ІТ-спеціальності</p>
+                </a>
+
+                <a href="https://stackoverflow.com/" target="_blank" class="resource-card stackoverflow">
+                    <h3>Stack Overflow</h3>
+                    <p>Для вирішення проблем та запитань</p>
+                </a>
+
+                <a href="https://github.com/" target="_blank" class="resource-card github">
+                    <h3>GitHub</h3>
+                    <p>Виклади свої проєкти сюди</p>
+                </a>
+            </div>
+        </section>
+
+        <footer>
+            <p>Створено для початківців в IT. Всі посилання актуальні на травень 2025 року.</p>
+            <p>Для конвертації у PDF використайте функцію друку вашого браузера (Ctrl+P або Cmd+P) і виберіть "Зберегти як PDF"</p>
+        </footer>
+    </div>
+
+    <script>
+        // При створенні PDF файлу, прибираємо інструкції щодо друку
+        if (window.matchMedia('print').matches) {
+            document.querySelectorAll('footer p:last-child').forEach(elem => {
+                elem.style.display = 'none';
+            });
+        }
+    </script>
+</body>
+</html>
